@@ -194,7 +194,7 @@ Add one node per sub-index (`wiki/*/_index.md`) and per key concept page. Connec
 Always show the lint report first. Ask: "Should I fix these automatically, or do you want to review each one?"
 
 Safe to auto-fix:
-- Adding missing frontmatter fields with placeholder values
+- Adding missing required frontmatter fields with placeholder values (never `reviewed` or `stale_after`: they are left out until there is a real date)
 - Writing a missing `description` from the page body, and syncing index entries to descriptions
 - Adding `stale_after` to pages with expiring facts
 - Creating stub pages for missing entities

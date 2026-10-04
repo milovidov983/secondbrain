@@ -23,4 +23,5 @@ Use the vault when the task needs context that is not in the current project: my
 - Writing to the vault goes through the skills: `wiki` (setup, routing), `wiki-ingest`, `wiki-query`, `save`, `wiki-lint`, and `wiki-inbox` if the inbox module is enabled.
 - After any write: update `wiki/index.md`, add an entry at the TOP of `wiki/log.md`, and rewrite `wiki/hot.md`.
 - Never modify files in `.raw/`.
+- When an answer relies on a vault page, check its frontmatter: if `stale_after` is today or earlier, say the fact may be out of date; if pages disagree, prefer one with `reviewed` on or after `updated` (the owner checked it). Never set `reviewed` yourself.
 <!-- secondbrain:end -->

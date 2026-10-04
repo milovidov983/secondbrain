@@ -148,6 +148,8 @@ On a new machine: install Claude Code and Obsidian, clone this pack and run `./i
 
 The pack is the source of truth for the skills. `git pull` here, then `./install.sh`. If you changed a skill directly in `~/.claude/skills/`, the old copy goes to `~/.claude/skills-backup/`. To keep your changes, fork this repository and edit the skills in the fork.
 
+An update never touches an existing vault's `CLAUDE.md` or pages. When an update adds new conventions (for example the `description`, `reviewed` and `stale_after` fields), compare your vault `CLAUDE.md` with `skills/wiki/assets/vault-CLAUDE.md.template` and copy over the new lines, then run `lint the wiki`: it lists pages missing the new fields and can fill them in.
+
 ## Troubleshooting
 
 - **Claude does not use the vault from other projects.** Check the `secondbrain` section in `~/.claude/CLAUDE.md` and its `Vault path:` (`./install.sh --vault <path>` fixes it).
