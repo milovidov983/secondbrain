@@ -1,0 +1,4 @@
+- **Resources** (`wiki/resources/`, `type: resource`): a book, course or tutorial being worked through. Fields `resource_type: book|course|tutorial|video`, `author`, `progress` (chapter or percent), `status: planned|in-progress|done|dropped`. Chapter or lesson notes are ingested as sources linked to the resource through `related`.
+- **Concepts** are the core of this vault: one page per idea, explained in your own words, with an example and links to prerequisite concepts (`prerequisites` field).
+- **Practice** (`wiki/practice/`, `type: practice`): exercises and projects. Each links the concepts it trains through `related`.
+- Mark concepts that are not yet understood with `> [!gap]`. `wiki-query` and `wiki-lint` treat them as a review list.

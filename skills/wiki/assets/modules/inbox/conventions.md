@@ -1,0 +1,3 @@
+- **Inbox** (`Inbox/YYYY-MM-DD.md`): free-form capture, no frontmatter. Triaged weekly with "process inbox" (`wiki-inbox`). Today's note is not triaged by default.
+- **Tasks** (`Tasks/`, `type: task`): one file per task, named after the task. Fields `status: todo|doing|waiting|done`, `priority: high|medium|low`, `due`, `waiting_for`.
+- **Link direction:** materials (sources, concepts) point to the task they serve through the `activity` field in their frontmatter. Never list materials inside a task: Obsidian backlinks show them.

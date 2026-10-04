@@ -1,0 +1,28 @@
+/* Folder colors in the file explorer */
+.nav-folder-title[data-path="wiki/entities"]    { color: #4c9be8; }
+.nav-folder-title[data-path="wiki/concepts"]    { color: #9b6be8; }
+.nav-folder-title[data-path="wiki/sources"]     { color: #3fae6a; }
+.nav-folder-title[data-path="wiki/questions"]   { color: #e8a13c; }
+.nav-folder-title[data-path="wiki/comparisons"] { color: #e8703c; }
+.nav-folder-title[data-path="wiki/meta"]        { color: #8a8a8a; }
+.nav-folder-title[data-path="Tasks"]            { color: #e84c6b; font-weight: 600; }
+.nav-folder-title[data-path="Inbox"]            { color: #d4b106; font-weight: 600; }
+.nav-folder-title[data-path="_templates"]       { opacity: 0.6; }
+
+/* Callouts */
+.callout[data-callout="contradiction"] {
+  --callout-color: 232, 76, 107;
+  --callout-icon: lucide-alert-triangle;
+}
+.callout[data-callout="gap"] {
+  --callout-color: 212, 177, 6;
+  --callout-icon: lucide-help-circle;
+}
+.callout[data-callout="key-insight"] {
+  --callout-color: 63, 174, 106;
+  --callout-icon: lucide-lightbulb;
+}
+.callout[data-callout="stale"] {
+  --callout-color: 138, 138, 138;
+  --callout-icon: lucide-clock;
+}

@@ -1,0 +1,5 @@
+- **Goals** (`wiki/goals/`, `type: goal`): fields `area: "[[Area]]"`, `target_date`, `progress` (0-100), `status: active|paused|done|abandoned`.
+- **Areas** (`wiki/areas/`, `type: area`): an ongoing responsibility without an end date (Health, Finance, Career). Goals, concepts and sources point to their area through the `area` field.
+- **Reviews** (`wiki/reviews/`, `type: review`): named `Review YYYY-MM-DD` (weekly) or `Review YYYY` (yearly). A review summarizes progress on active goals, wins, problems and the next focus. Claude drafts it from `wiki/log.md`, goals and tasks; the owner edits it.
+- **People** are entities (`wiki/entities/`, `entity_type: person`): shared context, important dates, follow-ups.
+- Books, courses and podcasts are sources (`source_type: book|course|podcast`).

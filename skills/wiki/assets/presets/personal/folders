@@ -1,0 +1,3 @@
+goals	goals with progress tracking (type: goal)
+areas	ongoing life areas: health, finance, career, hobbies (type: area)
+reviews	weekly / monthly / yearly reviews (type: review)

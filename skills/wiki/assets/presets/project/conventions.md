@@ -1,0 +1,4 @@
+- **Decisions** (`wiki/decisions/`, `type: decision`): context, options considered, the decision, consequences. Fields `decision_date`, `status: proposed|accepted|superseded`, `superseded_by`. Never rewrite an accepted decision: create a new one and set `superseded_by` on the old one.
+- **Meetings** (`wiki/meetings/`, `type: meeting`): named `YYYY-MM-DD <Topic>`. The raw transcript or notes go to `.raw/meetings/`; the meeting page holds the summary, decisions (linked) and action items.
+- Projects, products and initiatives are concept pages with tag `project`. People, teams and companies are entities with a `role`.
+- If the vault mixes work and personal life, tag personal pages with `personal` and filter with `-tag:#personal`.

@@ -1,0 +1,4 @@
+- **Papers** (`wiki/papers/`, `type: paper`) replace `wiki/sources/` for academic papers: fields `authors`, `year`, `venue`, `key_claim`, `methodology`, `supports`, `contradicts` (wikilinks to other papers or theses). Other material (blog posts, talks, datasets) still goes to `wiki/sources/`.
+- **Theses** (`wiki/theses/`, `type: thesis`) are living answers to the central research questions. Every ingest that touches a thesis updates it and cites the new paper. A thesis states the current position, the evidence for and against, and open questions.
+- Methods, datasets and research groups are entities (`entity_type: method|dataset|organization`).
+- Mark every unsupported or weakly supported claim with `> [!gap]`.

@@ -1,0 +1,2 @@
+- No extra page types: everything fits into sources, entities, concepts, questions and comparisons.
+- Topic areas are described in `wiki/overview.md`. Use tags (`#area/<name>`) to group pages by area instead of creating folders.

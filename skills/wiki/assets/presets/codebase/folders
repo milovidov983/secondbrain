@@ -1,0 +1,3 @@
+modules	one page per module, service or package (type: module)
+flows	data flows, request paths, business processes (type: flow)
+decisions	architecture decision records (type: decision)

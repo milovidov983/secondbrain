@@ -1,0 +1,59 @@
+# {{VAULT_NAME}}
+
+Purpose: {{PURPOSE}}
+Presets: {{PRESETS}}
+Modules: {{MODULES}}
+Content language: {{LANGUAGE}}
+Created: {{CREATED}}
+Based on: secondbrain (Karpathy LLM Wiki pattern)
+
+This file is the schema of the vault. Claude reads it before every operation. If it contradicts a skill, this file wins. Edit it freely: it is yours.
+
+## Structure
+
+```
+{{STRUCTURE}}
+```
+
+## Core Conventions
+
+- Every page in `wiki/` has flat YAML frontmatter: `type`, `title`, `created`, `updated`, `tags`, `status` (minimum). Full schema: `~/.claude/skills/wiki/references/frontmatter.md`.
+- Wikilinks use `[[Note Name]]`: filenames are unique across the vault, no paths needed.
+- Never wikilink files in `.raw/`: Obsidian does not index dot-folders. Source pages keep the path to the original as a plain string in `url`.
+- `.raw/` holds immutable source documents: never modify them.
+- `wiki/index.md` is the master catalog, and `wiki/<folder>/_index.md` are sub-indexes: update them whenever a page is created, renamed or deleted.
+- `wiki/log.md` is append-only. New entries go at the TOP.
+- `wiki/hot.md` is a ~500-word cache of recent context: overwrite it completely after every operation.
+- Contradictions between pages are marked with a `> [!contradiction]` callout on both pages. Knowledge gaps are marked with `> [!gap]`.
+- Pages are written in {{LANGUAGE}}, in declarative present tense. Technical terms may stay in their original language.
+- Use `related` for cross-references between wiki pages and `sources` for the source pages a page is based on.
+- Before `git push`, run `git pull --rebase`: the obsidian-git plugin may have committed to the same repository.
+
+## Preset Conventions
+
+{{PRESET_CONVENTIONS}}
+
+## Module Conventions
+
+{{MODULE_CONVENTIONS}}
+
+## My Conventions
+
+<!-- Your own rules: extra page types, naming, tags, what to ignore. Claude follows them.
+     Example: "Recipes are concept pages with tag `recipe` and fields `cuisine`, `time_minutes`." -->
+
+## Operations
+
+| Say | What happens |
+|---|---|
+| "ingest <file or URL>" | Source goes to `.raw/`, Claude writes a source page and updates every related page (`wiki-ingest`) |
+| "query: <question>", "query deep: ..." | Answer from the wiki with citations (`wiki-query`) |
+| "/save" | The current conversation becomes a wiki page (`save`) |
+| "lint the wiki" | Health check: orphans, dead links, contradictions, gaps (`wiki-lint`) |
+{{MODULE_OPERATIONS}}
+## Status Values
+
+- `seed`: exists, barely populated
+- `developing`: has real content, not yet complete
+- `mature`: comprehensive, well linked
+- `evergreen`: unlikely to need updates

@@ -1,0 +1,5 @@
+- **Modules** (`wiki/modules/`, `type: module`): fields `path` (in the repository), `language`, `status: active|deprecated|experimental`, `depends_on`, `used_by` (wikilinks).
+- **Flows** (`wiki/flows/`, `type: flow`): a sequence across modules (a request, a job, a business process). Prefer a Mermaid diagram plus numbered steps.
+- **Decisions** (`wiki/decisions/`, `type: decision`) are ADRs: context, decision, consequences, `status: proposed|accepted|superseded`.
+- The code itself is a living source: do not copy it into `.raw/`. Read it from the repository (see "Living Repository Sources" in `wiki-ingest`) and register the repository path in this file:
+  - Repository: `[TODO: path to the local clone]`, prefix `[TODO: short prefix, e.g. app]`
