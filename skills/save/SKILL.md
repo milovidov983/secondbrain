@@ -45,7 +45,7 @@ If the user specifies a type, use that. If not, pick the best fit based on the c
 4. **Extract** all relevant content from the conversation. Rewrite it in declarative present tense (not "the user asked" but the actual content itself).
 5. **Create** the note in the correct folder with full frontmatter.
 6. **Collect links**: identify any wiki pages mentioned in the conversation. Add them to `related` in frontmatter.
-7. **Update** `wiki/index.md`. Add the new entry at the top of the relevant section. If the folder has a sub-index (`wiki/<folder>/_index.md`), add the entry there too.
+7. **Update** `wiki/index.md`. Add `- [[Note Title]] — <description>` at the top of the relevant section. If the folder has a sub-index (`wiki/<folder>/_index.md`), add the entry there too.
 8. **Append** to `wiki/log.md`. New entry at the TOP:
    ```
    ## [YYYY-MM-DD] save | Note Title
@@ -64,6 +64,7 @@ If the user specifies a type, use that. If not, pick the best fit based on the c
 ---
 type: <synthesis|concept|source|decision|session>
 title: "Note Title"
+description: "One sentence: what this note says."
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 tags:
@@ -75,6 +76,8 @@ sources:
   - "[[Source Page If Applicable]]"  # a page in wiki/sources/, never a [[.raw/...]] link
 ---
 ```
+
+Add `stale_after: YYYY-MM-DD` if the note holds facts that expire on their own (prices, versions, current state, plans). Never set `reviewed`, even if the owner agreed with the discussion: it is set only when they explicitly check the saved page (see `~/.claude/skills/wiki/references/frontmatter.md`).
 
 For `question` type, add:
 ```yaml

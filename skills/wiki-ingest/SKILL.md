@@ -108,9 +108,13 @@ Steps:
 3. **Create** the source summary in `wiki/sources/`. Use the source frontmatter schema from `~/.claude/skills/wiki/references/frontmatter.md` (template: `_templates/Source.md`). If a preset in the vault `CLAUDE.md` defines a more specific type for this kind of source (a `paper` in `wiki/papers/`, a `meeting` in `wiki/meetings/`), create that page instead, from its template.
 4. **Create or update** entity pages in `wiki/entities/` for the people, organizations and products that matter. Create a page only for an entity with a clear role or one that appears repeatedly; list the rest in the source summary. Empty stub pages are noise.
 5. **Create or update** concept pages in `wiki/concepts/` for significant ideas, decisions, and initiatives, and the preset pages the source affects (theses, goals, modules, decisions...).
-6. **Update** the `_index.md` sub-indexes of the touched folders (`wiki/sources/_index.md`, `wiki/entities/_index.md`, `wiki/concepts/_index.md`, and preset folders).
+   For every page you create or change (fields: `~/.claude/skills/wiki/references/frontmatter.md`):
+   - Write or refresh its one-sentence `description`.
+   - Set `stale_after` if it now holds facts that expire on their own (prices, versions, current state, plans, roles). If it already has one and this source re-confirms the facts, move it forward.
+   - Never set or move `reviewed`. If the page has one and you changed what it says, note the page for the report in step 12.
+6. **Update** the `_index.md` sub-indexes of the touched folders (`wiki/sources/_index.md`, `wiki/entities/_index.md`, `wiki/concepts/_index.md`, and preset folders). Each entry is `- [[Page]] — <description>`; refresh entries whose description changed.
 7. **Update** `wiki/overview.md` if the big picture changed.
-8. **Update** `wiki/index.md`. Add entries for all new pages.
+8. **Update** `wiki/index.md`. Add entries for all new pages, in the same `- [[Page]] — <description>` form.
 9. **Update** `wiki/hot.md` with this ingest's context.
 10. **Append** to `wiki/log.md` (new entries at the TOP):
     ```markdown
@@ -119,9 +123,12 @@ Steps:
     - Summary: [[Source Title]]
     - Pages created: [[Page 1]], [[Page 2]]
     - Pages updated: [[Page 3]], [[Page 4]]
+    - Review outdated: [[Page 3]]
     - Key insight: One sentence on what is new.
     ```
+    Leave out the `Review outdated` line when no reviewed page changed.
 11. **Check for contradictions.** If new info conflicts with existing pages, add `> [!contradiction]` callouts on both pages.
+12. **Report** to the user what was created and updated. If you changed pages that carry `reviewed`, list them: "These pages were checked by you and have changed: [[Page 3]]. Worth a look."
 
 ---
 
@@ -153,7 +160,7 @@ Instead:
 4. The source page holds a summary, the key requirements, links to related pages, and review remarks. Before discussing or advising on the document, re-read the current version from git instead of relying on the page.
 5. When a branch is merged, change the `url` to the main-branch form.
 
-Delta tracking through `.raw/.manifest.json` does not apply. To check freshness, compare the page's `updated` date with `git log -1 --format=%cd origin/<branch> -- <path>`.
+Delta tracking through `.raw/.manifest.json` does not apply. To check freshness, compare the page's `updated` date with `git log -1 --format=%cd origin/<branch> -- <path>`. Give repo source pages a `stale_after` (a few months for an actively edited document) so lint reminds you to re-read them.
 
 ---
 
@@ -183,6 +190,8 @@ On the existing page, add:
 > [[Existing Page]] claims X. [[New Source]] says Y.
 > Needs resolution. Check dates, context, and primary sources.
 ```
+
+If the existing page carries `reviewed`, say so in the callout ("[[Existing Page]] (reviewed YYYY-MM-DD) claims X"): the owner confirmed that claim, so a conflict with it matters more. If it is expired (`stale_after` <= today), say that too: the newer source is then the likely winner.
 
 On the new source summary, reference it:
 ```markdown

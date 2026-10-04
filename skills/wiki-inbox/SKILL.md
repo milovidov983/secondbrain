@@ -87,11 +87,11 @@ Before creating any page, check `wiki/index.md` and Grep `wiki/` and `Tasks/` fo
    - **Tasks:** one file per task in `Tasks/`, named after the task title (unique, human-readable). Use `_templates/Task.md` fields (`type: task`, `title`, `created`, `status: todo`, `priority`, `due`, `waiting_for`, `tags`). Body: the original wording plus context, and `From Inbox: YYYY-MM-DD`. Do not put links to materials inside a task.
    - **Links to materials:** if a material relates to a task or activity, set the `activity` field in the material's frontmatter (source/concept), never the other way round.
    - **Ingest:** save URLs to `.raw/articles/`, move document files to `.raw/docs/` or `.raw/meetings/`, then load the `wiki-ingest` skill and run it as a batch ingest. Skip its per-source discussion step unless the user wants it.
-   - **Concepts / entities:** create from `_templates/Concept.md` / `_templates/Entity.md`, or append a dated section to an existing page and bump its `updated`.
+   - **Concepts / entities:** create from `_templates/Concept.md` / `_templates/Entity.md` (with a `description`), or append a dated section to an existing page and bump its `updated`. Never set `reviewed`; mention changed reviewed pages in the final report.
    - **Deletions:** remove the items; they stay recoverable from git history.
 6. **Clean up Inbox.** Delete every fully processed file. For a partially processed file, rewrite it to contain only the items the user deferred. Never delete `Inbox/.gitkeep`.
 7. **Update bookkeeping** (once, at the end):
-   - `wiki/index.md` and the relevant `wiki/*/_index.md`: add new pages.
+   - `wiki/index.md` and the relevant `wiki/*/_index.md`: add new pages as `- [[Page]] — <description>`.
    - `wiki/log.md`: new entry at the TOP:
      ```markdown
      ## [YYYY-MM-DD] inbox | Inbox triage (N files, M items)

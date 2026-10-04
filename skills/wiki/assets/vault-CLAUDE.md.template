@@ -17,7 +17,8 @@ This file is the schema of the vault. Claude reads it before every operation. If
 
 ## Core Conventions
 
-- Every page in `wiki/` has flat YAML frontmatter: `type`, `title`, `created`, `updated`, `tags`, `status` (minimum). Full schema: `~/.claude/skills/wiki/references/frontmatter.md`.
+- Every page in `wiki/` has flat YAML frontmatter: `type`, `title`, `description`, `created`, `updated`, `tags`, `status` (minimum). Full schema: `~/.claude/skills/wiki/references/frontmatter.md`.
+- `description` is one sentence about the page. Index entries are `- [[Page]] — <description>`, copied from it.
 - Wikilinks use `[[Note Name]]`: filenames are unique across the vault, no paths needed.
 - Never wikilink files in `.raw/`: Obsidian does not index dot-folders. Source pages keep the path to the original as a plain string in `url`.
 - `.raw/` holds immutable source documents: never modify them.
@@ -26,6 +27,8 @@ This file is the schema of the vault. Claude reads it before every operation. If
 - `wiki/hot.md` is a ~500-word cache of recent context: overwrite it completely after every operation.
 - Contradictions between pages are marked with a `> [!contradiction]` callout on both pages. Knowledge gaps are marked with `> [!gap]`.
 - Pages are written in {{LANGUAGE}}, in declarative present tense. Technical terms may stay in their original language.
+- `reviewed: YYYY-MM-DD` means the owner checked the page. Claude sets it only when the owner says they checked the page ("I checked [[X]]"), never on its own. If `updated` is later than `reviewed`, the review is out of date.
+- `stale_after: YYYY-MM-DD` marks pages with facts that expire on their own (prices, versions, current state, plans). From that date on the page is expired: say so when using it.
 - Use `related` for cross-references between wiki pages and `sources` for the source pages a page is based on.
 - Before `git push`, run `git pull --rebase`: the obsidian-git plugin may have committed to the same repository.
 
@@ -49,7 +52,8 @@ This file is the schema of the vault. Claude reads it before every operation. If
 | "ingest <file or URL>" | Source goes to `.raw/`, Claude writes a source page and updates every related page (`wiki-ingest`) |
 | "query: <question>", "query deep: ..." | Answer from the wiki with citations (`wiki-query`) |
 | "/save" | The current conversation becomes a wiki page (`save`) |
-| "lint the wiki" | Health check: orphans, dead links, contradictions, gaps (`wiki-lint`) |
+| "lint the wiki" | Health check: orphans, dead links, contradictions, gaps, expired and unreviewed pages (`wiki-lint`) |
+| "I checked [[Page]]", "what needs review?" | Mark a page reviewed, or list what is worth checking (`wiki`) |
 {{MODULE_OPERATIONS}}
 ## Status Values
 
@@ -57,3 +61,5 @@ This file is the schema of the vault. Claude reads it before every operation. If
 - `developing`: has real content, not yet complete
 - `mature`: comprehensive, well linked
 - `evergreen`: unlikely to need updates
+
+`status` is completeness, not trust: trust is `reviewed`, freshness is `stale_after`.

@@ -84,6 +84,8 @@ The core (sources, entities, concepts, questions, comparisons) fits any topic. P
 | Jot something down quickly (inbox module) | write in `Inbox/YYYY-MM-DD.md`, any format |
 | Sort the inbox (weekly) | `process inbox` |
 | Check health (every few weeks) | `lint the wiki` |
+| Confirm a page is correct | `I checked [[Page]]` |
+| See what is worth checking | `what needs review?` |
 | Use the vault from another project | nothing: Claude reads `wiki/hot.md`, then `wiki/index.md` |
 
 Why it works this way and in what rhythm: [METHODOLOGY.md](METHODOLOGY.md).
@@ -129,6 +131,7 @@ vault/
 - **Frontmatter on every wiki page**, links as `[[wikilinks]]`, unique file names.
 - **`wiki/index.md`** is updated on every new or deleted page; **`wiki/log.md`** is append-only, newest on top; **`wiki/hot.md`** (~500 words) is rewritten after every operation.
 - **Contradictions are flagged**, not overwritten: `> [!contradiction]` on both pages.
+- **Trust and freshness are visible.** Every page has a one-line `description`. Only you set `reviewed`, when you have checked a page; a later edit shows the review is out of date. Pages with facts that expire (prices, versions, plans) get `stale_after`, and Claude warns when it relies on an expired one.
 - **The vault `CLAUDE.md` wins** over the skills. Change it to change how Claude works in your vault.
 
 ## Backup and sync

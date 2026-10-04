@@ -99,6 +99,7 @@ Route based on what the user says:
 | "what do you know about X", "query:" | QUERY | `wiki-query` |
 | "save this", "file this", "/save" | SAVE | `save` |
 | "lint", "health check", "clean up" | LINT | `wiki-lint` |
+| "I checked [[X]]", "mark reviewed", "проверил", "what needs review?" | REVIEW | this skill |
 | "process inbox", "разбери inbox", "/inbox" | INBOX TRIAGE | `wiki-inbox` (inbox module) |
 
 ---
@@ -159,6 +160,26 @@ Goal: turn a generic vault into the owner's vault in one short conversation.
 1. Read `wiki/hot.md`. Then, if needed, the top of `wiki/log.md`.
 2. Summarize in 3-5 lines: what happened last, open threads, what is waiting (Inbox files, `seed` pages, open contradictions).
 3. Ask what to do next.
+
+---
+
+## REVIEW
+
+The owner confirms pages; Claude only records it. Field rules: `references/frontmatter.md` (Trust and Freshness Fields).
+
+**Mark reviewed** ("I checked [[X]]", "mark reviewed", "проверил X"):
+1. Set `reviewed: <today>` on each named page. Do not touch `updated`: the content did not change.
+2. If a page is expired (`stale_after` <= today), ask whether the owner also confirmed it is still true. If yes, move `stale_after` forward.
+3. Log it at the TOP of `wiki/log.md`: `## [YYYY-MM-DD] review | [[Page 1]], [[Page 2]]`.
+
+Never mark a page reviewed because the owner read it, liked an answer based on it, or did not object to an edit. Only an explicit "checked / correct / проверил" counts.
+
+**What needs review** ("what needs review?", "что проверить?"): Grep the frontmatter of `wiki/` and list, most important first, at most 10 per group:
+1. Review outdated: `updated` > `reviewed`.
+2. Expired: `stale_after` <= today.
+3. Unreviewed `mature` / `evergreen` pages, and unreviewed pages linked from many others.
+
+For each page give one line on what to check. Do not change anything.
 
 ---
 

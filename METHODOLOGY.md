@@ -64,6 +64,16 @@ Contradictions with older pages are not overwritten. They are flagged with `> [!
 
 **People.** A person gets a page only with a clear role or repeated appearances. Everyone else is listed in the source summary. Empty stubs are the typical junk of old vaults.
 
+### Review: you confirm, Claude records
+
+Claude writes almost every page, so a page being in the wiki says nothing about whether it is right. When you have checked a page against its sources, say "I checked [[Page]]": Claude sets `reviewed` to today. It never sets it on its own. If the page changes later, `updated` moves past `reviewed` and the page shows up in "what needs review?" and in lint.
+
+You do not need to review everything. Review the pages you act on: the ones decisions, money or other pages depend on. In a conflict Claude prefers a reviewed page; an unreviewed one is still used.
+
+### Freshness: facts that expire
+
+Some knowledge goes out of date without any new source: prices, versions, the current state of a project, plans, someone's role. Claude gives such pages a `stale_after` date. After it, the page is **expired**: queries still use it but say so, and lint lists it with a hint on how to re-check. A definition or a summary of a fixed document gets no date.
+
 ### Query and save: knowledge compounds
 
 A good answer is filed back into `wiki/questions/` and becomes part of the wiki. A valuable discussion becomes a page with `/save`. The next question starts from a richer wiki.
@@ -103,7 +113,8 @@ Do **not** migrate an old vault wholesale: its old, failed structure would move 
 | Any time | Notes in `Inbox/`, documents into `.raw/` | you |
 | On demand | ingest, "query:", `/save` | Claude |
 | Weekly | "process inbox" (inbox module); a weekly review (personal preset) | Claude drafts, you confirm |
-| Every 2-4 weeks | "lint the wiki": orphans, dead links, contradictions, gaps | Claude |
+| Every 2-4 weeks | "lint the wiki": orphans, dead links, contradictions, gaps, expired pages | Claude |
+| When you act on a page | Check it and say "I checked [[Page]]"; "what needs review?" shows the queue | you |
 | Quarterly | Structure review: presets, page types, conventions in `CLAUDE.md` | together |
 
 ## Git and sync

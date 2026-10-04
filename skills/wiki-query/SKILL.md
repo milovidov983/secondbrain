@@ -40,7 +40,7 @@ Do not open individual wiki pages in quick mode.
 1. **Read** `wiki/hot.md` first. It may already have the answer or directly relevant context.
 2. **Read** `wiki/index.md` to find the most relevant pages. Answer in the vault's content language unless the user writes in another one (scan for titles and descriptions).
 3. **Read** those pages. Follow wikilinks to depth-2 for key entities. No deeper.
-4. **Synthesize** the answer in chat. Cite sources with wikilinks: `(Source: [[Page Name]])`.
+4. **Synthesize** the answer in chat. Cite sources with wikilinks: `(Source: [[Page Name]])`. Weigh what you read by trust and freshness (see below).
 5. **Offer to file** the answer: "This analysis seems worth keeping. Should I save it as `wiki/questions/answer-name.md`?"
 6. If the question reveals a **gap**: say "I don't have enough on X. Want to find a source?"
 
@@ -54,8 +54,21 @@ Use for synthesis questions, comparisons, or "tell me everything about X."
 2. Identify all relevant sections (concepts, entities, sources, comparisons).
 3. Read every relevant page. No skipping.
 4. If wiki coverage is thin, offer to supplement with web search.
-5. Synthesize a comprehensive answer with full citations.
+5. Synthesize a comprehensive answer with full citations, weighing pages by trust and freshness (see below).
 6. Always file the result back as a wiki page. Deep answers are too valuable to lose.
+
+---
+
+## Trust and Freshness
+
+Every page records who confirmed it and how long it stays true (`reviewed`, `stale_after`; rules in `~/.claude/skills/wiki/references/frontmatter.md`). Read those fields on every page you open and use them like this:
+
+- **Expired** (`stale_after` <= today): use it, but say so next to the claim: "(as of [[Page]], may be out of date since YYYY-MM-DD)". If the answer hinges on it, offer to re-check the source or search the web.
+- **Pages disagree:** prefer a reviewed page (`reviewed` >= `updated`) over an unreviewed one, unless the unreviewed one rests on a clearly newer source. Name the conflict either way; never silently pick a side.
+- **Review outdated** (`updated` > `reviewed`): treat it as unreviewed.
+- Do not label every claim with its trust level. Mention it only when it changes the answer: a conflict, an expired fact, or a decision the user is about to make on an unreviewed page.
+
+Quick mode reads only the index, which carries no dates. If a quick answer is about something time-sensitive (prices, versions, current state), say it comes from the index and offer a standard query.
 
 ---
 
@@ -83,25 +96,25 @@ The master index (`wiki/index.md`) looks like:
 - [[overview]], [[hot]], [[log]]
 
 ## Entities
-- [[Entity Name]] — role
+- [[Entity Name]] — <description>
 
 ## Concepts
-- [[Concept Name]] — one-line definition
+- [[Concept Name]] — <description>
 
 ## Sources
-- [[Source Title]] — date, what it is
+- [[Source Title]] — <description>
 
 ## Questions
-- [[Question Title]] — answer summary
+- [[Question Title]] — <description>
 
 ## Comparisons
-- [[Comparison Title]] — verdict
+- [[Comparison Title]] — <description>
 
 ## <Preset sections: Papers, Goals, Decisions, ...>
-- [[Page]] — one line
+- [[Page]] — <description>
 ```
 
-Scan the section headers first to determine which sections to read.
+Every entry is the page's `description` frontmatter field, copied verbatim. Scan the section headers first to determine which sections to read.
 
 ---
 
@@ -118,13 +131,13 @@ updated: YYYY-MM-DD
 # Entities
 
 ## People
-- [[Person Name]]: role, org
+- [[Person Name]] — <description>
 
 ## Organizations
-- [[Org Name]]: what they do
+- [[Org Name]] — <description>
 
 ## Products
-- [[Product Name]]: category
+- [[Product Name]] — <description>
 ```
 
 Use sub-indexes when the question is scoped to one type of page. Avoid reading the full master index for narrow queries.
@@ -141,6 +154,7 @@ When filing an answer:
 ---
 type: synthesis
 title: "Short descriptive title"
+description: "One sentence: the answer in short."
 question: "The exact query as asked."
 answer_quality: solid
 created: YYYY-MM-DD
@@ -156,9 +170,9 @@ sources:
 ---
 ```
 
-Save it to `wiki/questions/<Short descriptive title>.md` (template: `_templates/Synthesis.md`). Write the answer as the page body. Include citations. Link every mentioned concept or entity.
+Save it to `wiki/questions/<Short descriptive title>.md` (template: `_templates/Synthesis.md`). Write the answer as the page body. Include citations. Link every mentioned concept or entity. If the answer rests on facts that expire, set `stale_after` to the earliest `stale_after` among the pages it relies on (or your own estimate). Never set `reviewed`.
 
-After filing, add an entry to `wiki/index.md` under Questions, add a new entry at the TOP of `wiki/log.md`, and rewrite `wiki/hot.md`.
+After filing, add `- [[Title]] — <description>` to `wiki/index.md` under Questions, add a new entry at the TOP of `wiki/log.md`, and rewrite `wiki/hot.md`.
 
 ---
 
