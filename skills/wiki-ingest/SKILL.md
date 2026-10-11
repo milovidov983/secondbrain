@@ -115,7 +115,7 @@ Steps:
 6. **Update** the `_index.md` sub-indexes of the touched folders (`wiki/sources/_index.md`, `wiki/entities/_index.md`, `wiki/concepts/_index.md`, and preset folders). Each entry is `- [[Page]] — <description>`; refresh entries whose description changed.
 7. **Update** `wiki/overview.md` if the big picture changed.
 8. **Update** `wiki/index.md`. Add entries for all new pages, in the same `- [[Page]] — <description>` form.
-9. **Update** `wiki/hot.md` with this ingest's context.
+9. **Rewrite** `wiki/hot.md` as a whole: this ingest becomes the single `Last Updated` entry, stale lines go (rules: Hot Cache in `~/.claude/skills/wiki/SKILL.md`).
 10. **Append** to `wiki/log.md` (new entries at the TOP):
     ```markdown
     ## [YYYY-MM-DD] ingest | Source Title

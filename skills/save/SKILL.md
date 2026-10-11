@@ -53,7 +53,7 @@ If the user specifies a type, use that. If not, pick the best fit based on the c
    - Location: wiki/[folder]/Note Title.md
    - From: conversation on [brief topic description]
    ```
-9. **Update** `wiki/hot.md` to reflect the new addition.
+9. **Rewrite** `wiki/hot.md` as a whole: the new page becomes the single `Last Updated` entry, stale lines go (rules: Hot Cache in `~/.claude/skills/wiki/SKILL.md`).
 10. **Confirm**: "Saved as [[Note Title]] in wiki/[folder]/."
 
 ---

@@ -33,6 +33,7 @@ Work through these in order:
     - review outdated: `updated` > `reviewed`;
     - unreviewed pages that others lean on: `mature` / `evergreen` pages, and pages with many inbound links;
     - pages where a `[!contradiction]` involves a reviewed page.
+12. **Hot cache drift**. `wc -w wiki/hot.md` over about 600 words, more than one dated entry under `Last Updated`, or lines about things that `wiki/log.md` or the task files show as done. The cache has turned into a journal: rewrite it from the current state (rules: Hot Cache in `~/.claude/skills/wiki/SKILL.md`).
 
 Checks 6, 8, 10 and 11 read only frontmatter: do them with Grep over `wiki/`, not by opening pages one by one.
 
@@ -85,6 +86,9 @@ status: developing
 
 ## Cross-Reference Gaps
 - [[Entity Name]] mentioned in [[Page A]] without a wikilink.
+
+## Hot Cache
+- 3,300 words, 45 dated entries (the limit is about 500 words and one entry). Stale: "waiting for the owner's decision on X" (decided YYYY-MM-DD).
 ```
 
 ---
@@ -199,6 +203,7 @@ Safe to auto-fix:
 - Adding `stale_after` to pages with expiring facts
 - Creating stub pages for missing entities
 - Adding wikilinks for unlinked mentions
+- Rewriting a drifted `wiki/hot.md` from the current state (nothing is lost: the history is in `wiki/log.md`)
 
 Needs review before fixing:
 - Refreshing the content of expired pages (show what would change first)

@@ -221,6 +221,14 @@ YYYY-MM-DD. [what happened]
 
 Keep it under 500 words. It is a cache, not a journal. Overwrite it completely each time.
 
+The file drifts into a second log unless every update follows these rules:
+
+- **Write the whole file, never insert into it.** Start from the state of the vault now, not from the old text. Adding one more entry on top of the old ones is the failure this section exists to prevent.
+- **`Last Updated` holds one entry:** the last operation. The entry it replaces is already in `wiki/log.md`; that is where history lives.
+- **Every other line describes the present.** Before keeping a line from the old file, check it is still true. Drop what is done, decided or closed, and "next" items that were already acted on.
+- **Count the words.** Over about 600, cut: details belong to the pages, and a `[[link]]` is enough to reach them.
+- Sections added by the vault (a to-do for the next session, items waiting for verification) follow the same rules: current items only.
+
 ---
 
 ## Cross-Project Referencing

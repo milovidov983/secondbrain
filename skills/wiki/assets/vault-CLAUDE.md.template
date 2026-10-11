@@ -24,7 +24,7 @@ This file is the schema of the vault. Claude reads it before every operation. If
 - `.raw/` holds immutable source documents: never modify them.
 - `wiki/index.md` is the master catalog, and `wiki/<folder>/_index.md` are sub-indexes: update them whenever a page is created, renamed or deleted.
 - `wiki/log.md` is append-only. New entries go at the TOP.
-- `wiki/hot.md` is a ~500-word cache of recent context: overwrite it completely after every operation.
+- `wiki/hot.md` is a ~500-word cache of the current state: write the whole file anew after every operation, never add to it. One entry under `Last Updated`, no history (history is `wiki/log.md`), nothing that is already done or decided. Over about 600 words, cut.
 - Contradictions between pages are marked with a `> [!contradiction]` callout on both pages. Knowledge gaps are marked with `> [!gap]`.
 - Pages are written in {{LANGUAGE}}, in declarative present tense. Technical terms may stay in their original language.
 - `reviewed: YYYY-MM-DD` means the owner checked the page. Claude sets it only when the owner says they checked the page ("I checked [[X]]"), never on its own. If `updated` is later than `reviewed`, the review is out of date.
