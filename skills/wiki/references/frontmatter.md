@@ -51,9 +51,9 @@ stale_after: 2026-10-01  # the content may be out of date from this date on
 
 ### reviewed
 
-Who wrote a page (almost always Claude) and who confirmed it are different things. `reviewed` records the second.
+Who wrote a page (almost always the agent) and who confirmed it are different things. `reviewed` records the second.
 
-- Set it only when the owner says they checked the page ("I checked [[X]]", "mark reviewed", "проверил"). Claude never sets or moves it on its own initiative, including after its own edits.
+- Set it only when the owner says they checked the page ("I checked [[X]]", "mark reviewed", "проверил"). The agent never sets or moves it on its own initiative, including after its own edits.
 - Never remove it. A later edit bumps `updated`, and that alone shows the review is out of date.
 
 Trust levels are derived, not stored:
@@ -133,7 +133,7 @@ answer_quality: solid   # draft | solid | definitive
 
 ### preset types
 
-Presets add types such as `goal`, `area`, `review`, `paper`, `thesis`, `resource`, `practice`, `decision`, `meeting`, `module`, `flow`, `task`. Their fields are defined in the preset conventions copied into the vault `CLAUDE.md` and in the templates in `_templates/`. Those definitions win over this file.
+Presets add types such as `goal`, `area`, `review`, `paper`, `thesis`, `resource`, `practice`, `decision`, `meeting`, `module`, `flow`, `task`. Their fields are defined in the preset conventions copied into the vault `AGENTS.md` and in the templates in `_templates/`. Those definitions win over this file.
 
 ---
 

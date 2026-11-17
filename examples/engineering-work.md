@@ -9,7 +9,7 @@ Setup:
   --purpose "Work as a system architect at <Company>, plus personal life" --yes
 ```
 
-Paste into `## My Conventions` of the vault `CLAUDE.md`:
+Paste into `## My Conventions` of the vault `AGENTS.md`:
 
 ```markdown
 - **Domains** (the product areas I support) are concept pages named `Domain <Name>`

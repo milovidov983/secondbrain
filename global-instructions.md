@@ -1,10 +1,10 @@
-<!-- secondbrain:begin (managed by secondbrain/install.sh; edit the source in global-CLAUDE.md) -->
+<!-- secondbrain:begin (managed by secondbrain/install.sh; edit the source in global-instructions.md) -->
 ## Second brain: Obsidian vault (LLM Wiki pattern)
 
-My knowledge lives in an Obsidian vault maintained by Claude (secondbrain pack, Karpathy LLM Wiki pattern).
+My knowledge lives in an Obsidian vault maintained by my coding agent (secondbrain pack, Karpathy LLM Wiki pattern).
 
 Vault path: {{VAULT_PATH}}
-A workspace `CLAUDE.md` may name a different vault; it takes precedence.
+A workspace `AGENTS.md` (or `CLAUDE.md`) may name a different vault; it takes precedence.
 
 ### When to use it
 
@@ -19,8 +19,8 @@ Use the vault when the task needs context that is not in the current project: my
 
 ### Rules
 
-- The vault's own `CLAUDE.md` is its schema: read it before writing anything there.
-- Writing to the vault goes through the skills: `wiki` (setup, routing), `wiki-ingest`, `wiki-query`, `save`, `wiki-lint`, and `wiki-inbox` if the inbox module is enabled.
+- The vault's own `AGENTS.md` is its schema (`CLAUDE.md` is a symlink to it): read it before writing anything there.
+- Writing to the vault goes through the skills: `wiki` (setup, routing), `wiki-ingest`, `wiki-query`, `wiki-save`, `wiki-lint`, and `wiki-inbox` if the inbox module is enabled.
 - After any write: update `wiki/index.md`, add an entry at the TOP of `wiki/log.md`, and rewrite `wiki/hot.md` as a whole (current state in ~500 words, one `Last Updated` entry, no history).
 - Never modify files in `.raw/`.
 - When an answer relies on a vault page, check its frontmatter: if `stale_after` is today or earlier, say the fact may be out of date; if pages disagree, prefer one with `reviewed` on or after `updated` (the owner checked it). Never set `reviewed` yourself.

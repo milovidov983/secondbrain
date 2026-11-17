@@ -1,8 +1,8 @@
 # Examples
 
-Presets cover common kinds of vaults. Everything specific to *you* goes into the `## My Conventions` section of your vault `CLAUDE.md`. Claude treats those lines as rules, exactly like preset conventions.
+Presets cover common kinds of vaults. Everything specific to *you* goes into the `## My Conventions` section of your vault `AGENTS.md`. The agent treats those lines as rules, exactly like preset conventions.
 
-Each example below is a block you can paste into `## My Conventions` and adapt. Claude can also write it for you during onboarding ("/wiki") from a description like "I'm a software architect, I support several product domains".
+Each example below is a block you can paste into `## My Conventions` and adapt. The agent can also write it for you during onboarding ("/wiki") from a description like "I'm a software architect, I support several product domains".
 
 | Example | Presets it builds on |
 |---|---|

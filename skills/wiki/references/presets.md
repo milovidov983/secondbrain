@@ -11,7 +11,7 @@ A vault always has the **core**: `.raw/`, `wiki/{index,log,hot,overview}.md`, an
 | `comparison` | `wiki/comparisons/` | a side-by-side analysis |
 | `meta` | `wiki/meta/`, `wiki/*.md` | indexes, dashboards, lint reports |
 
-A **preset** adds page types, folders, templates and conventions for one kind of vault. Presets combine: `--preset research,personal`. The definitions live in `assets/presets/<name>/` (`folders`, `conventions.md`, `_templates/`). The vault `CLAUDE.md` holds a copy of the conventions of the presets it uses, and that copy is authoritative.
+A **preset** adds page types, folders, templates and conventions for one kind of vault. Presets combine: `--preset research,personal`. The definitions live in `assets/presets/<name>/` (`folders`, `conventions.md`, `_templates/`). The vault `AGENTS.md` holds a copy of the conventions of the presets it uses, and that copy is authoritative.
 
 ## Choosing
 
@@ -42,7 +42,7 @@ No extra folders. Topic areas are described in `wiki/overview.md` and grouped wi
 ### personal
 - `wiki/goals/` (`type: goal`): `area`, `target_date`, `progress`, `status: active|paused|done|abandoned`
 - `wiki/areas/` (`type: area`): ongoing responsibilities (Health, Finance, Career)
-- `wiki/reviews/` (`type: review`): weekly / yearly reviews drafted by Claude from the log, goals and tasks
+- `wiki/reviews/` (`type: review`): weekly / yearly reviews drafted by the agent from the log, goals and tasks
 - Templates: Goal, Area, Review
 
 ### research
@@ -80,14 +80,14 @@ No extra folders. Topic areas are described in `wiki/overview.md` and grouped wi
 
 ## Your Own Page Types
 
-Presets are just examples. Any vault can define its own types in `## My Conventions` of its `CLAUDE.md`, for example:
+Presets are just examples. Any vault can define its own types in `## My Conventions` of its `AGENTS.md`, for example:
 
 ```markdown
 - Recipes are concept pages with tag `recipe` and fields `cuisine`, `time_minutes`, `servings`.
 - Clients are entities with `entity_type: client` and fields `contract_start`, `status`.
 ```
 
-Claude follows these exactly like preset conventions. If a type needs its own folder, create `wiki/<folder>/` with an `_index.md`, add a section to `wiki/index.md`, and mention it in `## Structure`. See `examples/` in the pack for a full worked example.
+The agent follows these exactly like preset conventions. If a type needs its own folder, create `wiki/<folder>/` with an `_index.md`, add a section to `wiki/index.md`, and mention it in `## Structure`. See `examples/` in the pack for a full worked example.
 
 ## Making a New Preset
 
@@ -95,7 +95,7 @@ Create `assets/presets/<name>/` in the pack with:
 
 - `description`: one line, shown by `scaffold.sh --list`
 - `folders`: one line per extra `wiki/` folder, `name<TAB>description`
-- `conventions.md`: the rules, copied into the vault `CLAUDE.md`
+- `conventions.md`: the rules, copied into the vault `AGENTS.md`
 - `_templates/*.md` (optional): Obsidian templates for the new types
 
 Then re-run `./install.sh`.

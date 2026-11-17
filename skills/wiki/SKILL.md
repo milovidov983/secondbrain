@@ -1,7 +1,7 @@
 ---
 name: wiki
 description: >
-  Claude + Obsidian knowledge companion (secondbrain pack). Creates a persistent wiki vault
+  Obsidian knowledge companion for coding agents (secondbrain pack). Creates a persistent wiki vault
   on any topic, onboards the owner, adds presets, manages the hot cache, and routes to the
   sub-skills (ingest, query, save, lint, inbox). Triggers on: "/wiki", "set up wiki",
   "scaffold vault", "create knowledge base", "second brain", "obsidian vault",
@@ -10,7 +10,7 @@ description: >
 allowed-tools: Read Write Edit Glob Grep Bash
 ---
 
-# wiki: Claude + Obsidian Knowledge Companion
+# wiki: Obsidian Knowledge Companion
 
 You are a knowledge architect. You build and maintain a persistent, compounding wiki inside an Obsidian vault. You don't just answer questions. You write, cross-reference, file, and maintain a structured knowledge base that gets richer with every source added and every question asked.
 
@@ -24,12 +24,14 @@ The key difference from RAG: the wiki is a persistent artifact. Cross-references
 
 The vault path is not hardcoded. Resolve it in this order:
 
-1. The current working directory, if it contains `CLAUDE.md` and `wiki/index.md` (Claude Code is running inside the vault).
-2. The vault path named in the workspace `CLAUDE.md` (a `## Wiki Knowledge Base` / `Path:` section).
-3. The `Vault path:` line in the global `~/.claude/CLAUDE.md` (the `secondbrain` section written by `install.sh`).
+1. The current working directory, if it contains `AGENTS.md` (or `CLAUDE.md`) and `wiki/index.md` (the agent is running inside the vault).
+2. The vault path named in the workspace `AGENTS.md` or `CLAUDE.md` (a `## Wiki Knowledge Base` / `Path:` section).
+3. The `Vault path:` line in the global instructions: `~/.config/opencode/AGENTS.md` (OpenCode) or `~/.claude/CLAUDE.md` (Claude Code), in the `secondbrain` section written by `install.sh`.
 4. Otherwise ask the user. Do not guess and do not create a vault in a default location without confirmation.
 
-**The vault `CLAUDE.md` is the schema.** Read it before any write. It lists the presets, modules, extra page types and folders, the content language, and the owner's own conventions. If it contradicts this skill or a sub-skill, the vault `CLAUDE.md` wins.
+**The vault `AGENTS.md` is the schema** (`CLAUDE.md` is a symlink to it). Read it before any write. It lists the presets, modules, extra page types and folders, the content language, and the owner's own conventions. If it contradicts this skill or a sub-skill, the vault `AGENTS.md` wins.
+
+**Paths in this skill are relative to this skill's directory** (the skill loader reports its base directory). The sub-skills (`wiki-ingest`, `wiki-query`, `wiki-save`, `wiki-lint`, `wiki-inbox`) are installed next to this one and reference shared files as `../wiki/...`.
 
 ---
 
@@ -41,14 +43,14 @@ Three layers:
 vault/
 ├── .raw/       # Layer 1: immutable source documents
 ├── wiki/       # Layer 2: LLM-generated knowledge base
-└── CLAUDE.md   # Layer 3: schema and instructions
+└── AGENTS.md   # Layer 3: schema and instructions (CLAUDE.md is a symlink to it)
 ```
 
 Core structure, present in every vault:
 
 ```
 vault/
-├── CLAUDE.md               # vault schema (presets, conventions, language)
+├── AGENTS.md               # vault schema (presets, conventions, language); CLAUDE.md symlinks to it
 ├── .raw/                   # immutable sources (never modify)
 │   └── .manifest.json      # ingest delta tracking
 ├── wiki/
@@ -61,7 +63,7 @@ vault/
 │   ├── sources/            # one summary page per source (+ _index.md)
 │   ├── questions/          # filed answers and research syntheses
 │   ├── comparisons/        # side-by-side analyses
-│   ├── <preset folders>/   # added by presets, listed in the vault CLAUDE.md
+│   ├── <preset folders>/   # added by presets, listed in the vault AGENTS.md
 │   └── meta/               # dashboards, lint reports
 ├── <module folders>/       # e.g. Inbox/ and Tasks/ from the inbox module
 ├── _templates/             # note templates
@@ -75,7 +77,7 @@ Everything needed to build a vault ships with this skill:
 | Path (next to this SKILL.md) | What |
 |---|---|
 | `scripts/scaffold.sh` | creates or completes a vault, never overwrites |
-| `assets/vault-CLAUDE.md.template` | the vault schema template |
+| `assets/vault-AGENTS.md.template` | the vault schema template |
 | `assets/_templates/` | core note templates |
 | `assets/presets/<name>/` | `description`, `folders`, `conventions.md`, `_templates/` |
 | `assets/modules/<name>/` | the same layout for modules |
@@ -92,12 +94,12 @@ Route based on what the user says:
 | User says | Operation | Where |
 |-----------|-----------|-------|
 | "set up a vault", "create wiki", "/wiki" with no vault yet | SCAFFOLD | this skill |
-| "/wiki" in a vault whose `CLAUDE.md` still has `[TODO` placeholders | ONBOARD | this skill |
+| "/wiki" in a vault whose `AGENTS.md` still has `[TODO` placeholders | ONBOARD | this skill |
 | "add the research preset", "enable inbox" | ADD PRESET / MODULE | this skill |
 | "where were we", "continue", "продолжим" | RESUME | this skill |
 | "ingest [source]", "process this", "add this" | INGEST | `wiki-ingest` |
 | "what do you know about X", "query:" | QUERY | `wiki-query` |
-| "save this", "file this", "/save" | SAVE | `save` |
+| "save this", "file this", "/save" | SAVE | `wiki-save` |
 | "lint", "health check", "clean up" | LINT | `wiki-lint` |
 | "I checked [[X]]", "mark reviewed", "проверил", "what needs review?" | REVIEW | this skill |
 | "process inbox", "разбери inbox", "/inbox" | INBOX TRIAGE | `wiki-inbox` (inbox module) |
@@ -114,9 +116,9 @@ Trigger: the user wants a new vault.
    - **Which language** should pages be written in?
    - **Do you want an Inbox?** (quick capture during the week + weekly triage + tasks)
 2. Pick presets from the answer (read `references/presets.md`). Combine when the purpose spans several kinds ("work + personal life" → `project,personal`). Say which presets you chose and why, in one line.
-3. Run the scaffold script non-interactively:
+3. Run the scaffold script non-interactively (from this skill's directory, or with its absolute path):
    ```bash
-   bash ~/.claude/skills/wiki/scripts/scaffold.sh --vault <path> --preset <list> \
+   bash <this-skill-dir>/scripts/scaffold.sh --vault <path> --preset <list> \
      --modules <inbox|none> --name "<name>" --purpose "<one sentence>" --lang <language> --yes
    ```
 4. Continue with ONBOARD.
@@ -127,18 +129,18 @@ If the script is missing (skill copied without `scripts/`), build the same struc
 
 ## ONBOARD
 
-Trigger: the vault exists but its `CLAUDE.md` still contains `[TODO` placeholders, or the user just scaffolded it.
+Trigger: the vault exists but its `AGENTS.md` still contains `[TODO` placeholders, or the user just scaffolded it.
 
 Goal: turn a generic vault into the owner's vault in one short conversation.
 
-1. Read the vault `CLAUDE.md` and `wiki/overview.md`.
+1. Read the vault `AGENTS.md` and `wiki/overview.md`.
 2. Ask (skip whatever is already known):
    - the purpose, if still a placeholder;
    - the 3-7 **main areas** or topics the vault will cover;
    - what **sources** they will feed it (articles, books, meeting notes, papers, a repository, voice notes);
    - any **conventions** they already care about (naming, tags, extra page types like "recipe" or "client").
 3. Write the answers:
-   - `CLAUDE.md`: replace the placeholders, add their rules under `## My Conventions`. A new page type gets a line like the preset ones: folder (or tag), `type`, fields.
+   - `AGENTS.md`: replace the placeholders, add their rules under `## My Conventions`. A new page type gets a line like the preset ones: folder (or tag), `type`, fields.
    - `wiki/overview.md`: purpose and a short section per area.
    - One `seed` concept page per main area, linked from the overview and listed in `wiki/index.md`.
    - `wiki/log.md`, `wiki/hot.md`.
@@ -149,8 +151,8 @@ Goal: turn a generic vault into the owner's vault in one short conversation.
 
 ## ADD PRESET / MODULE
 
-1. Run `scaffold.sh` on the existing vault with the full new list (`--preset <old>,<new> --modules <list> --yes`). It only adds missing folders, templates and indexes, and never touches the existing `CLAUDE.md`.
-2. Update the vault `CLAUDE.md` by hand: the `Presets:` / `Modules:` lines, the folders in `## Structure`, the contents of `assets/presets/<name>/conventions.md` (or the module's) under `## Preset Conventions` / `## Module Conventions`, and for the inbox module the "process inbox" row in `## Operations`.
+1. Run `scaffold.sh` on the existing vault with the full new list (`--preset <old>,<new> --modules <list> --yes`). It only adds missing folders, templates and indexes, and never touches the existing `AGENTS.md`.
+2. Update the vault `AGENTS.md` by hand: the `Presets:` / `Modules:` lines, the folders in `## Structure`, the contents of `assets/presets/<name>/conventions.md` (or the module's) under `## Preset Conventions` / `## Module Conventions`, and for the inbox module the "process inbox" row in `## Operations`.
 3. Add the new sections to `wiki/index.md`. Log the change.
 
 ---
@@ -165,7 +167,7 @@ Goal: turn a generic vault into the owner's vault in one short conversation.
 
 ## REVIEW
 
-The owner confirms pages; Claude only records it. Field rules: `references/frontmatter.md` (Trust and Freshness Fields).
+The owner confirms pages; the agent only records it. Field rules: `references/frontmatter.md` (Trust and Freshness Fields).
 
 **Mark reviewed** ("I checked [[X]]", "mark reviewed", "проверил X"):
 1. Set `reviewed: <today>` on each named page. Do not touch `updated`: the content did not change.
@@ -233,7 +235,7 @@ The file drifts into a second log unless every update follows these rules:
 
 ## Cross-Project Referencing
 
-This is the force multiplier. Any Claude Code project can use this vault without duplicating context. `install.sh --vault` already writes the vault path to the global `~/.claude/CLAUDE.md`. To point one project at a different vault, add to that project's `CLAUDE.md`:
+This is the force multiplier. Any project of any supported agent can use this vault without duplicating context. `install.sh --vault` already writes the vault path to the global instructions (`~/.claude/CLAUDE.md` for Claude Code, `~/.config/opencode/AGENTS.md` for OpenCode). To point one project at a different vault, add to that project's `AGENTS.md` (or `CLAUDE.md`):
 
 ```markdown
 ## Wiki Knowledge Base
@@ -259,7 +261,7 @@ This keeps token usage low. Hot cache costs ~500 tokens. Index costs ~1000 token
 Your job as the LLM:
 1. Set up the vault (once) and onboard the owner
 2. Route ingest, query, save, lint and inbox to the right sub-skill
-3. Follow the vault `CLAUDE.md`: its presets, page types, language and conventions
+3. Follow the vault `AGENTS.md`: its presets, page types, language and conventions
 4. Always update index, sub-indexes, log, and hot cache on changes
 5. Always use frontmatter and wikilinks
 6. Never modify `.raw/` sources

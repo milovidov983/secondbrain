@@ -24,16 +24,16 @@ Work through these in order:
 3. **Stale claims**. Assertions on older pages that newer sources have contradicted or updated.
 4. **Missing pages**. Concepts or entities mentioned in multiple pages but lacking their own page.
 5. **Missing cross-references**. Entities mentioned in a page but not linked.
-6. **Frontmatter gaps**. Pages missing required fields (type, title, description, status, created, updated, tags; `meta` pages need no description), plus the type-specific fields defined in `~/.claude/skills/wiki/references/frontmatter.md` and in the preset conventions of the vault `CLAUDE.md`.
+6. **Frontmatter gaps**. Pages missing required fields (type, title, description, status, created, updated, tags; `meta` pages need no description), plus the type-specific fields defined in `../wiki/references/frontmatter.md` (the sibling `wiki` skill, installed next to this one; paths are relative to this skill's directory) and in the preset conventions of the vault `AGENTS.md`.
 7. **Empty sections**. Headings with no content underneath.
 8. **Stale index entries**. Items in `wiki/index.md` or the sub-indexes (`wiki/*/_index.md`, including preset folders) pointing to renamed or deleted pages, pages missing from them, and entries whose text differs from the page's `description`.
-9. **Misplaced pages**. A page whose `type` belongs to another folder according to the vault `CLAUDE.md` (a `paper` in `wiki/sources/`, a `decision` in `wiki/concepts/`).
+9. **Misplaced pages**. A page whose `type` belongs to another folder according to the vault `AGENTS.md` (a `paper` in `wiki/sources/`, a `decision` in `wiki/concepts/`).
 10. **Expired pages**. `stale_after` <= today. For each, say what is likely out of date and how to re-check it (re-read the source, a web search, ask the owner). Also flag pages that clearly hold expiring facts (prices, versions, current state, plans) but have no `stale_after`, and `evergreen` pages that have one.
-11. **Review queue**. Report only; never set `reviewed` yourself (rules: `~/.claude/skills/wiki/references/frontmatter.md`):
+11. **Review queue**. Report only; never set `reviewed` yourself (rules: `../wiki/references/frontmatter.md`):
     - review outdated: `updated` > `reviewed`;
     - unreviewed pages that others lean on: `mature` / `evergreen` pages, and pages with many inbound links;
     - pages where a `[!contradiction]` involves a reviewed page.
-12. **Hot cache drift**. `wc -w wiki/hot.md` over about 600 words, more than one dated entry under `Last Updated`, or lines about things that `wiki/log.md` or the task files show as done. The cache has turned into a journal: rewrite it from the current state (rules: Hot Cache in `~/.claude/skills/wiki/SKILL.md`).
+12. **Hot cache drift**. `wc -w wiki/hot.md` over about 600 words, more than one dated entry under `Last Updated`, or lines about things that `wiki/log.md` or the task files show as done. The cache has turned into a journal: rewrite it from the current state (rules: Hot Cache in `../wiki/SKILL.md`).
 
 Checks 6, 8, 10 and 11 read only frontmatter: do them with Grep over `wiki/`, not by opening pages one by one.
 

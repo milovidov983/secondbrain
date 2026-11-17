@@ -1,5 +1,5 @@
 ---
-name: save
+name: wiki-save
 description: >
   Save the current conversation, answer, or insight into the Obsidian wiki vault as a
   structured note. Analyzes the chat, determines the right note type, creates frontmatter,
@@ -10,7 +10,7 @@ description: >
 allowed-tools: Read Write Edit Glob Grep
 ---
 
-# save: File Conversations Into the Wiki
+# wiki-save: File Conversations Into the Wiki
 
 Good answers and insights shouldn't disappear into chat history. This skill takes what was just discussed and files it as a permanent wiki page.
 
@@ -31,7 +31,7 @@ Determine the best type from the conversation content:
 | comparison | wiki/comparisons/ | Side-by-side analysis of options (template: `_templates/Comparison.md`) |
 | session | wiki/meta/ | Full session summary: captures everything discussed |
 
-Presets add more types (goal, review, paper, thesis, resource, meeting, module...). Read the vault `CLAUDE.md` and use its type and folder when the content fits one. Write in the vault's content language.
+Presets add more types (goal, review, paper, thesis, resource, meeting, module...). Read the vault `AGENTS.md` and use its type and folder when the content fits one. Write in the vault's content language.
 
 If the user specifies a type, use that. If not, pick the best fit based on the content. When in doubt, use `synthesis`.
 
@@ -53,7 +53,7 @@ If the user specifies a type, use that. If not, pick the best fit based on the c
    - Location: wiki/[folder]/Note Title.md
    - From: conversation on [brief topic description]
    ```
-9. **Rewrite** `wiki/hot.md` as a whole: the new page becomes the single `Last Updated` entry, stale lines go (rules: Hot Cache in `~/.claude/skills/wiki/SKILL.md`).
+9. **Rewrite** `wiki/hot.md` as a whole: the new page becomes the single `Last Updated` entry, stale lines go (rules: Hot Cache in the sibling `wiki` skill, `../wiki/SKILL.md`).
 10. **Confirm**: "Saved as [[Note Title]] in wiki/[folder]/."
 
 ---
@@ -77,7 +77,9 @@ sources:
 ---
 ```
 
-Add `stale_after: YYYY-MM-DD` if the note holds facts that expire on their own (prices, versions, current state, plans). Never set `reviewed`, even if the owner agreed with the discussion: it is set only when they explicitly check the saved page (see `~/.claude/skills/wiki/references/frontmatter.md`).
+Add `stale_after: YYYY-MM-DD` if the note holds facts that expire on their own (prices, versions, current state, plans). Never set `reviewed`, even if the owner agreed with the discussion: it is set only when they explicitly check the saved page (see `../wiki/references/frontmatter.md`).
+
+Shared references (`../wiki/...`) live in the sibling `wiki` skill, installed next to this one; the paths are relative to this skill's directory.
 
 For `question` type, add:
 ```yaml
@@ -96,7 +98,7 @@ status: active
 ## Writing Style
 
 - Declarative, present tense. Write the knowledge, not the conversation.
-- Not: "The user asked about X and Claude explained..."
+- Not: "The user asked about X and the agent explained..."
 - Yes: "X works by doing Y. The key insight is Z."
 - Include all relevant context. Future sessions should be able to read this page cold.
 - Link every mentioned concept, entity, or wiki page with wikilinks.

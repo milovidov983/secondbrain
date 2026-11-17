@@ -61,7 +61,7 @@ Use for synthesis questions, comparisons, or "tell me everything about X."
 
 ## Trust and Freshness
 
-Every page records who confirmed it and how long it stays true (`reviewed`, `stale_after`; rules in `~/.claude/skills/wiki/references/frontmatter.md`). Read those fields on every page you open and use them like this:
+Every page records who confirmed it and how long it stays true (`reviewed`, `stale_after`; rules in `../wiki/references/frontmatter.md`, the sibling `wiki` skill installed next to this one; paths are relative to this skill's directory). Read those fields on every page you open and use them like this:
 
 - **Expired** (`stale_after` <= today): use it, but say so next to the claim: "(as of [[Page]], may be out of date since YYYY-MM-DD)". If the answer hinges on it, offer to re-check the source or search the web.
 - **Pages disagree:** prefer a reviewed page (`reviewed` >= `updated`) over an unreviewed one, unless the unreviewed one rests on a clearly newer source. Name the conflict either way; never silently pick a side.

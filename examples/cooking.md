@@ -7,7 +7,7 @@ Setup:
   --purpose "Home cooking: recipes I make, techniques, ingredients, what worked" --yes
 ```
 
-Paste into `## My Conventions` of the vault `CLAUDE.md`:
+Paste into `## My Conventions` of the vault `AGENTS.md`:
 
 ```markdown
 - **Recipes** live in `wiki/recipes/` (`type: recipe`) with fields `cuisine`, `time_minutes`, `servings`,
@@ -20,4 +20,4 @@ Paste into `## My Conventions` of the vault `CLAUDE.md`:
 - When I say "I made X", append a dated entry to `## My notes` of the recipe and update `tried` and `rating`.
 ```
 
-Since recipes get their own folder, also create `wiki/recipes/_index.md` and a `## Recipes` section in `wiki/index.md` (or ask Claude to do it).
+Since recipes get their own folder, also create `wiki/recipes/_index.md` and a `## Recipes` section in `wiki/index.md` (or ask the agent to do it).

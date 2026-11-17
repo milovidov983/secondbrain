@@ -13,7 +13,7 @@ allowed-tools: Read Write Edit Glob Grep Bash WebFetch
 
 Part of the optional **inbox module**. If the vault has no `Inbox/` folder, say so and offer to enable the module (`wiki` skill, ADD PRESET / MODULE).
 
-Write the plan, task pages and log entries in the vault's content language (see the vault `CLAUDE.md`). The examples below are in English.
+Write the plan, task pages and log entries in the vault's content language (see the vault `AGENTS.md`). The examples below are in English.
 
 `Inbox/` is the capture layer: the owner writes whatever comes up (links, todos, thoughts, meeting scraps) in free form, usually one file per day (`Inbox/YYYY-MM-DD.md`), without frontmatter. Triage turns that into structured knowledge and leaves the Inbox empty.
 

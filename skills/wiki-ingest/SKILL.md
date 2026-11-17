@@ -8,7 +8,9 @@ allowed-tools: Read Write Edit Glob Grep Bash WebFetch
 
 Read the source. Write the wiki. Cross-reference everything. A single source typically touches 5-15 wiki pages.
 
-**Before the first ingest of a session, read the vault `CLAUDE.md`.** It sets the content language, the presets (which may define a more specific page type than `source`, such as `paper` or `meeting`) and the owner's conventions. It wins over this skill.
+**Before the first ingest of a session, read the vault `AGENTS.md`** (the schema; `CLAUDE.md` is a symlink to it). It sets the content language, the presets (which may define a more specific page type than `source`, such as `paper` or `meeting`) and the owner's conventions. It wins over this skill.
+
+Shared references (`../wiki/...`) live in the sibling `wiki` skill, installed next to this one; the paths are relative to this skill's directory.
 
 **Syntax standard**: Write all Obsidian Markdown using proper Obsidian Flavored Markdown. Wikilinks as `[[Note Name]]`, callouts as `> [!type] Title`, embeds as `![[file]]`, properties as YAML frontmatter. If the kepano/obsidian-skills plugin is installed, prefer its canonical obsidian-markdown skill for Obsidian syntax reference. Otherwise, follow the guidance in this skill.
 
@@ -57,7 +59,7 @@ Trigger: user passes a URL starting with `https://`.
 
 Steps:
 
-1. **Fetch** the page using WebFetch.
+1. **Fetch** the page with the web fetch tool (`WebFetch` in Claude Code, `webfetch` in OpenCode).
 2. **Clean** (optional): if `defuddle` is available (`which defuddle 2>/dev/null`), run `defuddle [url]` to strip ads, nav, and clutter. Typically saves 40-60% tokens. Fall back to raw WebFetch output if not installed.
 3. **Derive slug** from the URL path (last segment, lowercased, spaces→hyphens, strip query strings).
 4. **Save** to `.raw/articles/[slug]-[YYYY-MM-DD].md` with a frontmatter header:
@@ -77,7 +79,7 @@ Trigger: user passes an image file path (`.png`, `.jpg`, `.jpeg`, `.gif`, `.webp
 
 Steps:
 
-1. **Read** the image file using the Read tool. Claude can process images natively.
+1. **Read** the image file with the file reading tool. Most current models process images natively; if the current model does not support images, ask the user for a description or run OCR via Bash.
 2. **Describe** the image contents: extract all text (OCR), identify key concepts, entities, diagrams, and data visible in the image.
 3. **Save** the description to `.raw/images/[slug]-[YYYY-MM-DD].md`:
    ```markdown
@@ -105,17 +107,17 @@ Steps:
 
 1. **Read** the source completely. Do not skim.
 2. **Discuss** key takeaways with the user. Ask: "What should I emphasize? How granular?" Skip this if the user says "just ingest it."
-3. **Create** the source summary in `wiki/sources/`. Use the source frontmatter schema from `~/.claude/skills/wiki/references/frontmatter.md` (template: `_templates/Source.md`). If a preset in the vault `CLAUDE.md` defines a more specific type for this kind of source (a `paper` in `wiki/papers/`, a `meeting` in `wiki/meetings/`), create that page instead, from its template.
+3. **Create** the source summary in `wiki/sources/`. Use the source frontmatter schema from `../wiki/references/frontmatter.md` (template: `_templates/Source.md`). If a preset in the vault `AGENTS.md` defines a more specific type for this kind of source (a `paper` in `wiki/papers/`, a `meeting` in `wiki/meetings/`), create that page instead, from its template.
 4. **Create or update** entity pages in `wiki/entities/` for the people, organizations and products that matter. Create a page only for an entity with a clear role or one that appears repeatedly; list the rest in the source summary. Empty stub pages are noise.
 5. **Create or update** concept pages in `wiki/concepts/` for significant ideas, decisions, and initiatives, and the preset pages the source affects (theses, goals, modules, decisions...).
-   For every page you create or change (fields: `~/.claude/skills/wiki/references/frontmatter.md`):
+   For every page you create or change (fields: `../wiki/references/frontmatter.md`):
    - Write or refresh its one-sentence `description`.
    - Set `stale_after` if it now holds facts that expire on their own (prices, versions, current state, plans, roles). If it already has one and this source re-confirms the facts, move it forward.
    - Never set or move `reviewed`. If the page has one and you changed what it says, note the page for the report in step 12.
 6. **Update** the `_index.md` sub-indexes of the touched folders (`wiki/sources/_index.md`, `wiki/entities/_index.md`, `wiki/concepts/_index.md`, and preset folders). Each entry is `- [[Page]] — <description>`; refresh entries whose description changed.
 7. **Update** `wiki/overview.md` if the big picture changed.
 8. **Update** `wiki/index.md`. Add entries for all new pages, in the same `- [[Page]] — <description>` form.
-9. **Rewrite** `wiki/hot.md` as a whole: this ingest becomes the single `Last Updated` entry, stale lines go (rules: Hot Cache in `~/.claude/skills/wiki/SKILL.md`).
+9. **Rewrite** `wiki/hot.md` as a whole: this ingest becomes the single `Last Updated` entry, stale lines go (rules: Hot Cache in `../wiki/SKILL.md`).
 10. **Append** to `wiki/log.md` (new entries at the TOP):
     ```markdown
     ## [YYYY-MM-DD] ingest | Source Title
@@ -154,7 +156,7 @@ Some sources are documents in a git repository that keeps changing: a codebase, 
 
 Instead:
 
-1. Record the repository once in the vault `CLAUDE.md`: the local clone path and a short reference prefix (for example `docs`). Create a source page for the repository itself (`source_type: repo`) that explains how to read it.
+1. Record the repository once in the vault `AGENTS.md`: the local clone path and a short reference prefix (for example `docs`). Create a source page for the repository itself (`source_type: repo`) that explains how to read it.
 2. Read documents straight from git, and never check out branches in the user's clone: `git -C <clone> fetch --prune`, then `git -C <clone> show 'origin/<branch>:<path>'`. Use `git diff origin/<main>...origin/<branch>` to see what a branch changes.
 3. Create one source page per document, with `source_type: repo` and `url: "<prefix>:<path>"` for the main branch or `"<prefix>@<branch>:<path>"` for a branch. Record its state in a `repo_state` field (`main`, `branch`, `in-review`).
 4. The source page holds a summary, the key requirements, links to related pages, and review remarks. Before discussing or advising on the document, re-read the current version from git instead of relying on the page.

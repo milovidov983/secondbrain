@@ -16,7 +16,7 @@
 #   --list              list presets and modules, then exit
 #
 # Without --yes and on an interactive terminal, missing options are asked for.
-# Claude runs it non-interactively from the `wiki` skill: scaffold.sh --vault ... --yes
+# The agent runs it non-interactively from the `wiki` skill: scaffold.sh --vault ... --yes
 
 set -euo pipefail
 
@@ -155,10 +155,10 @@ put "$VAULT/.obsidian/templates.json" '{
   "folder": "_templates"
 }'
 
-# --- CLAUDE.md --------------------------------------------------------------
+# --- AGENTS.md (vault schema; CLAUDE.md is a symlink to it) ---------------------
 structure() {
   echo "vault/"
-  echo "├── CLAUDE.md          # this file: the vault schema"
+  echo "├── AGENTS.md          # this file: the vault schema (CLAUDE.md is a symlink to it)"
   echo "├── .raw/              # immutable source documents (hidden in Obsidian)"
   echo "├── wiki/"
   echo "│   ├── index.md       # master catalog"
@@ -197,17 +197,36 @@ for m in $(split "$MODULES"); do
   [[ "$m" == inbox ]] && MOD_OPS='| "process inbox" | Weekly triage of `Inbox/` into tasks, sources and wiki pages after you confirm the plan (`wiki-inbox`) |
 '
 done
-if [[ -e "$VAULT/CLAUDE.md" ]]; then
-  say "  = CLAUDE.md (kept; to add a preset, ask Claude: \"add the <name> preset to the vault\")"
+if [[ -e "$VAULT/AGENTS.md" ]]; then
+  say "  = AGENTS.md (kept; to add a preset, ask your agent: \"add the <name> preset to the vault\")"
+  if [[ -f "$VAULT/CLAUDE.md" && ! -L "$VAULT/CLAUDE.md" ]]; then
+    say "  ! CLAUDE.md is a separate file, not a symlink: the schema is AGENTS.md, consider merging them"
+  fi
+elif [[ -f "$VAULT/CLAUDE.md" && ! -L "$VAULT/CLAUDE.md" ]]; then
+  # Vault from an older pack version: rename, keeping the owner's content.
+  if [[ $DRY -eq 1 ]]; then
+    say "  [dry-run] ~ CLAUDE.md → AGENTS.md (rename, content preserved)"
+  else
+    mv "$VAULT/CLAUDE.md" "$VAULT/AGENTS.md"
+    say "  ~ CLAUDE.md → AGENTS.md (renamed, content preserved)"
+  fi
 elif [[ $DRY -eq 1 ]]; then
-  say "  [dry-run] + CLAUDE.md"
+  say "  [dry-run] + AGENTS.md"
 else
   R_VAULT_NAME="$NAME" R_PURPOSE="$PURPOSE" R_PRESETS="$PRESETS" R_MODULES="${MODULES:-none}" \
   R_LANGUAGE="$LANG_" R_CREATED="$TODAY" R_STRUCTURE="$(structure)" \
   R_PRESET_CONVENTIONS="$(join_conv presets "$PRESETS")" \
   R_MODULE_CONVENTIONS="$(join_conv modules "$MODULES")" R_MODULE_OPERATIONS="$MOD_OPS" \
-    render "$A/vault-CLAUDE.md.template" > "$VAULT/CLAUDE.md"
-  say "  + CLAUDE.md"
+    render "$A/vault-AGENTS.md.template" > "$VAULT/AGENTS.md"
+  say "  + AGENTS.md"
+fi
+if [[ ! -e "$VAULT/CLAUDE.md" && ! -L "$VAULT/CLAUDE.md" ]]; then
+  if [[ $DRY -eq 1 ]]; then
+    say "  [dry-run] + CLAUDE.md → AGENTS.md (symlink)"
+  else
+    ln -s AGENTS.md "$VAULT/CLAUDE.md"
+    say "  + CLAUDE.md → AGENTS.md (symlink)"
+  fi
 fi
 
 # --- Starter wiki pages -----------------------------------------------------
@@ -244,7 +263,7 @@ updated: ${TODAY}T00:00:00
 $TODAY. Vault created, no content yet.
 
 ## Active Threads
-- Onboarding: run \`claude\` in the vault and say \"/wiki\" to finish setup, then ingest the first source."
+- Onboarding: run your agent (\`claude\` or \`opencode\`) in the vault and say \"/wiki\" to finish setup, then ingest the first source."
 put "$VAULT/wiki/overview.md" "$(fm Overview)
 # Overview
 
